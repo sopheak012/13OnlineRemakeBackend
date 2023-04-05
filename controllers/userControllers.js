@@ -32,6 +32,7 @@ const login = async (req, res) => {
   }
 };
 
+// Controller function for getting all users
 const getUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -44,6 +45,7 @@ const getUsers = async (req, res) => {
   }
 };
 
+//Controller function for deleting all users
 const deleteAllUsers = async (req, res) => {
   try {
     await User.deleteMany({});
