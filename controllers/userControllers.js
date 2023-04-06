@@ -6,13 +6,13 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 // Controller function for signing up a new user
 const signup = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
   try {
     const user = await User.signUp(email, password);
     const token = await jwt.sign({ _id: user._id }, SECRET_KEY, {
       expiresIn: "3d",
     });
-    res.status(201).json({ email, token });
+    res.status(201).json({ username, email, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -26,7 +26,8 @@ const login = async (req, res) => {
     const token = await jwt.sign({ _id: user._id }, SECRET_KEY, {
       expiresIn: "3d",
     });
-    res.status(200).json({ email, token });
+    const username = user.username;
+    res.status(200).json({ username, email, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

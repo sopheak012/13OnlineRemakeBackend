@@ -3,6 +3,11 @@ const bcrypt = require("bcrypt");
 const isStrongPassword = require("./checkPassword");
 
 const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
@@ -15,9 +20,9 @@ const userSchema = new mongoose.Schema({
 });
 
 // Static function for signing up a new user
-userSchema.statics.signUp = async function (email, password) {
-  if (!email || !password) {
-    throw new Error("All field must be filled");
+userSchema.statics.signUp = async function (email, password, username) {
+  if (!email || !password || !username) {
+    throw new Error("All fields must be filled");
   }
   try {
     const exists = await this.findOne({ email });
@@ -25,13 +30,23 @@ userSchema.statics.signUp = async function (email, password) {
       throw new Error("Email already in use");
     }
 
+    const usernameExists = await this.findOne({ username });
+    if (usernameExists) {
+      throw new Error("Username already in use");
+    }
+
     if (!isStrongPassword(password)) {
       throw new Error(
         "Password not strong enough. Minimum length 6, Must have at least 1 digit"
       );
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await this.create({ email, password: hashedPassword });
+    const user = await this.create({
+      email,
+      password: hashedPassword,
+      username,
+    });
     return user;
   } catch (error) {
     throw new Error(error.message);
