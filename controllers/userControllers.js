@@ -12,7 +12,7 @@ const signup = async (req, res) => {
     const token = await jwt.sign({ _id: user._id }, SECRET_KEY, {
       expiresIn: "3d",
     });
-    res.status(201).json({ user, token });
+    res.status(201).json({ email, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -26,7 +26,7 @@ const login = async (req, res) => {
     const token = await jwt.sign({ _id: user._id }, SECRET_KEY, {
       expiresIn: "3d",
     });
-    res.status(200).json({ user, token });
+    res.status(200).json({ email, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
