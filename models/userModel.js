@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Static function for signing up a new user
-userSchema.statics.signUp = async function (email, password, username) {
+userSchema.statics.signUp = async function (username, email, password) {
   if (!email || !password || !username) {
     throw new Error("All fields must be filled");
   }

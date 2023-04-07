@@ -8,7 +8,7 @@ const SECRET_KEY = process.env.SECRET_KEY;
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
   try {
-    const user = await User.signUp(email, password);
+    const user = await User.signUp(username, email, password);
     const token = await jwt.sign({ _id: user._id }, SECRET_KEY, {
       expiresIn: "3d",
     });
