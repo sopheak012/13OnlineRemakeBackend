@@ -57,9 +57,16 @@ const deleteAllUsers = async (req, res) => {
   }
 };
 
+//Controller function for getting a username
+const getUsername = async (req, res) => {
+  const username = req.params.username;
+  res.status(200).json(username);
+};
+
 module.exports = {
   signup,
   login,
   getUsers,
   deleteAllUsers,
+  getUsername,
 };

@@ -4,6 +4,9 @@ const app = express();
 require("dotenv").config();
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
+const http = require("http");
+const socketIO = require("socket.io");
+const initializeSocket = require("./socket/socket");
 
 const PORT = process.env.PORT || 4000;
 const DB_URI = process.env.DB_URI;
@@ -14,8 +17,18 @@ const connectDB = async () => {
     await mongoose.connect(DB_URI);
     console.log("Connected to MongoDB");
 
+    // create a socket connection
+    const httpServer = http.createServer(app);
+    const io = socketIO(httpServer, {
+      cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
+      },
+    });
+    initializeSocket(io); // pass the io object to the initializeSocket function
+
     // start the server only after the connection is successful
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
