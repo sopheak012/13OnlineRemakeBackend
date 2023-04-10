@@ -1,8 +1,6 @@
 const socketIO = require("socket.io");
 
-function initializeSocket(server) {
-  const io = socketIO(server);
-
+function initializeSocket(io) {
   io.on("connection", (socket) => {
     console.log("A new user connected");
 
@@ -19,8 +17,6 @@ function initializeSocket(server) {
       console.log("A user disconnected");
     });
   });
-
-  return io;
 }
 
 module.exports = initializeSocket;
