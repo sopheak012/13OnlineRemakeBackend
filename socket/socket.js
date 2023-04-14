@@ -13,9 +13,10 @@ function initializeSocket(io) {
     socket.on("lobby-update", (update) => {
       console.log("state updated");
       gameList = update;
+      io.emit("update", gameList);
     });
 
-    //send a callback to any socket that needs an update
+    //send a ca llback to any socket that needs an update
     socket.on("get-update", (callback) => {
       console.log("update state to client");
       callback(gameList);
