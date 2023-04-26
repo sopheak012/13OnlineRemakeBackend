@@ -4,9 +4,31 @@ function initializeSocket(io) {
   io.on("connection", (socket) => {
     console.log("A new user connected");
 
+    // Join a room
+    socket.on("join-room", (lobbyName) => {
+      socket.join(lobbyName);
+      console.log(`Socket ${socket.id} joined room ${lobbyName}`);
+    });
+
+    // Leave a room
+    socket.on("leave-room", (lobbyName) => {
+      socket.leave(lobbyName);
+      console.log(`Socket ${socket.id} left room ${lobbyName}`);
+    });
+
+    //Handle Message
+    socket.on("send-message", (lobbyName, message) => {
+      console.log(`Message received for room ${lobbyName}: ${message}`);
+      io.to(lobbyName).emit("receive-message", message);
+    });
+
     // Disconnect event
     socket.on("disconnect", () => {
-      console.log("A user disconnected");
+      console.log(
+        `A user with socket ID ${
+          socket.id
+        } disconnected from rooms: ${Array.from(socket.rooms).join(", ")}`
+      );
     });
 
     //update state from clients
