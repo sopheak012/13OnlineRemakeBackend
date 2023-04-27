@@ -4,9 +4,12 @@ function initializeSocket(io) {
   io.on("connection", (socket) => {
     console.log("A new user connected");
 
-    //listen for startGame
     socket.on("start-game", (lobbyName) => {
+      console.log('Server received "start-game" event for lobby:', lobbyName);
+
+      // Perform any necessary validation
       io.to(lobbyName).emit("start-game");
+      console.log('Server emitted "start-game" event to lobby:', lobbyName);
     });
 
     // Join a room
