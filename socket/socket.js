@@ -4,6 +4,11 @@ function initializeSocket(io) {
   io.on("connection", (socket) => {
     console.log("A new user connected");
 
+    //listen for startGame
+    socket.on("start-game", (lobbyName) => {
+      io.to(lobbyName).emit("start-game");
+    });
+
     // Join a room
     socket.on("join-room", (lobbyName) => {
       socket.join(lobbyName);
@@ -18,7 +23,7 @@ function initializeSocket(io) {
 
     //Handle Message
     socket.on("send-message", (lobbyName, message) => {
-      console.log(`Message received for room ${lobbyName}: ${message}`);
+      console.log(`Message received for room ${lobbyName}: ${message.message}`);
       io.to(lobbyName).emit("receive-message", message);
     });
 
