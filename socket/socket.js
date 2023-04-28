@@ -24,6 +24,11 @@ function initializeSocket(io) {
       console.log(`Socket ${socket.id} left room ${lobbyName}`);
     });
 
+    //deleted a socket room
+    socket.on("delete-room", (lobbyName) => {
+      io.to(lobbyName).emit("delete-room");
+    });
+
     //Handle Message
     socket.on("send-message", (lobbyName, message) => {
       console.log(`Message received for room ${lobbyName}: ${message.message}`);
