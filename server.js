@@ -21,7 +21,7 @@ const connectDB = async () => {
     const httpServer = http.createServer(app);
     const io = socketIO(httpServer, {
       cors: {
-        origin: "https://one3frontend.onrender.com",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"],
       },
     });
