@@ -1,5 +1,6 @@
 function initializeSocket(io) {
   let gameList = [null];
+  let cardGame = null;
 
   io.on("connection", (socket) => {
     console.log("A new user connected");
@@ -55,6 +56,20 @@ function initializeSocket(io) {
     socket.on("get-update", (callback) => {
       console.log("update state to client");
       callback(gameList);
+    });
+
+    //cardGame
+
+    //send a callback to player
+    socket.on("initial-cardGame", (callback) => {
+      callback(cardGame);
+    });
+
+    //update card game state
+    socket.on("cardGame-update", (data) => {
+      const { lobbyName, cardGameState } = data;
+      cardGame = cardGameState;
+      io.to(lobbyName).emit("cardGame-update", cardGame);
     });
   });
 }
